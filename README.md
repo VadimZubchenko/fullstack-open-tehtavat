@@ -1,6 +1,3 @@
-# fullstack-open-tehtavat
-Tämä repositorio on tarkoitettu Helsingin yliopiston Full Stack Open -kurssin tehtävien palautukseen.
-
 # Full Stack Open - Tehtävien Palautusrepositorio
 Tämä repositorio on tarkoitettu Full Stack Open -kurssin tehtävien palautukseen. Kurssi kattaa modernin websovelluskehityksen keskeiset teknologiat: React, Redux, Node.js, MongoDB, GraphQL ja TypeScript. Pääpaino on Reactilla toteutettavissa single page -sovelluksissa (SPA) ja niitä tukevissa Node.js toteutetuissa REST-rajapinnoissa.
 
