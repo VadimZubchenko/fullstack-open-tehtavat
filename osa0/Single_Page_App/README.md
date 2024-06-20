@@ -29,18 +29,19 @@ sequenceDiagram
     server-->>browser: HTTP 200 OK<br/>[JSON file with all notes inside]
     deactivate server
 
-    Note left of browser: JavaScript code sets the event handler in the form<br/>and waits for the Save button to be pressed 
+    Note left of browser: The JavaScript code draws received notes on an HTML page 
+    Note left of browser: The JavaScript code sets the event handler in the form<br/>and waits for the Save button to be pressed 
     Note right of client: The client fills the form<br/>with a new note and clicks the Save button 
     
     client->>browser: Fill Form
     client->>browser: Click Save button
-    Note left of browser: JavaScript code fetches the new note from<br/>the input field of the form and adds it into array
-    Note left of browser: JavaScript code redraws notes on an HTML page 
-    Note left of browser: JavaScript code sends the new note in JSON format
+    Note left of browser: The JavaScript code fetches the new note from the form,<br/>put it into local array, clear the form field
+    Note left of browser: The JavaScript code redraws notes on an HTML page 
+    Note left of browser: The JavaScript code sends the new note in JSON format
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
     activate server
     Note right of browser: Send the new note attached as JSON file.
-    Note right of server: Put the new note into array.
+    Note right of server: Put the new note into array
     server-->>browser: HTTP 201 Created<br/>{"message":"note created"}
     deactivate server    
 
