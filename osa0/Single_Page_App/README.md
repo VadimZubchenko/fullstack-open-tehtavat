@@ -4,18 +4,9 @@ sequenceDiagram
     participant browser
     participant server
     
-    Note right of client: The client fills out the input field by<br/>a new note and clicks the Save button
-    client->>browser: Save button is pressed
-    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
-    activate server
-    Note right of browser: The new note attached as data to POST requests is sent inside of the request body.
-    Note right of server: The server creates a new note object<br/>and adds it into "notes" array.
-    Note right of server: The sever redirects request<br/>to another location                         
-    server-->>browser: HTTP 302 Found<br/>Location: /exampleapp/notes
-    deactivate server
-
-    Note left of browser: The browser makes request<br/>to another location
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    client->>browser: Put URL 
+    client->>browser: Press Enter button
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/spa
     activate server
     server-->>browser: HTTP 200 OK<br/>the HTML document
     deactivate server
@@ -25,19 +16,32 @@ sequenceDiagram
     activate server
     server-->>browser: HTTP 200 OK<br/>the CSS file
     deactivate server
-    Note left of browser: Executing the script-tag of the HEAD<br/>for loading the JavaScript file.
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    Note left of browser: Executing the script-tag of the HEAD<br/>for loading the JavaScript file.
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
     activate server
     server-->>browser: HTTP 200 OK<br/>the JavaScript file
     deactivate server
-    
-    Note left of browser: Executing the JavaScript code, that<br/>makes request for the JSON with the notes   
-    
+
+    Note left of browser: Executing the JavaScript code, that makes<br/>request to the Server to get the notes in JSON 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
     server-->>browser: HTTP 200 OK<br/>[JSON file with all notes inside]
+    deactivate server
+
+    Note left of browser: JavaScript code sets the event handler in the form<br/>and waits for the Save button to be pressed 
+    Note right of client: The client fills the form<br/>with a new note and clicks the Save button 
+    
+    client->>browser: Fill Form
+    client->>browser: Click Save button
+    Note left of browser: JavaScript code fetches the new note from<br/>the input field of the form and adds it into array
+    Note left of browser: JavaScript code redraws notes on an HTML page 
+    Note left of browser: JavaScript code sends the new note in JSON format
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    Note right of browser: Send the new note attached as JSON file.
+    Note right of server: Put the new note into array.
+    server-->>browser: HTTP 201 Created<br/>{"message":"note created"}
     deactivate server    
 
-    Note left of browser: Executing the callback<br/>function that renders the notes
 ```
