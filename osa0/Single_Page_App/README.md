@@ -23,15 +23,15 @@ sequenceDiagram
     server-->>browser: HTTP 200 OK<br/>the JavaScript file
     deactivate server
 
-    Note left of browser: The JavaScript code sets AJAX onreadystatechange<br/> event and waits for the response from the server  
-    Note left of browser: The JavaScript code makes<br/>GET request to the server for the notes
-    Note left of browser: The JavaScript code sets the event handler in the form<br/>and waits for the Save button to be pressed  
+    Note left of browser: The JavaScript code sets event handler<br/>and waits for the response from the server  
+    Note left of browser: The JavaScript code makes<br/>GET-request to the server for the notes
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
     server-->>browser: HTTP 200 OK<br/>[JSON file with all notes inside]
     deactivate server
 
-    Note left of browser: The event handler of Javascript code is triggered,the received<br/> notes are inserted into the local array and rendered on the HTML page 
+    Note left of browser: The event handler of Javascript code is triggered, then the received<br/> notes are inserted into the local         array and rendered on the HTML page
+    Note left of browser: The JavaScript code sets the event handler in the form<br/>and waits for the Save button to be pressed   
     Note right of client: The client fills the form<br/>with a new note and clicks the Save button 
     
     client->>browser: Fill Form
