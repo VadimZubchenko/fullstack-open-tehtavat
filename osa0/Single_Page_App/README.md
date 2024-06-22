@@ -30,7 +30,8 @@ sequenceDiagram
     server-->>browser: HTTP 200 OK<br/>[JSON file with all notes inside]
     deactivate server
 
-    Note left of browser: The event handler of Javascript code is triggered, then the received<br/> notes are inserted into the local         array and rendered on the HTML page
+    Note left of browser: The event handler of Javascript code is triggered, then the received<br/> notes are inserted into the local array and rendered on the HTML page
+    Note left of browser: The JavaScript code sets the event handler in the form<br/>and waits for the Save button to be pressed
     
 
 ```
