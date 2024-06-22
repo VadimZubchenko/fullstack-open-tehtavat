@@ -43,6 +43,7 @@ sequenceDiagram
     Note right of browser: Send the new note attached as JSON file.
     Note right of server: Put the new note into array
     server-->>browser: HTTP 201 Created<br/>{"message":"note created"}
+    Note left of browser:  The Javascript code's callback function<br/>is triggered and responded text is printed in the console
     deactivate server    
 
 ```
