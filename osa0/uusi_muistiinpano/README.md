@@ -40,5 +40,5 @@ sequenceDiagram
     server-->>browser: HTTP 200 OK<br/>[JSON file with all notes inside]
     deactivate server    
 
-    Note left of browser: Browser executes the callback<br/>function that renders the notes
+    Note left of browser: The Javascript code's AJAX onreadystatechange<br/> event is triggered and browser renders the notes
 ```
