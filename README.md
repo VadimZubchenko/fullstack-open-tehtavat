@@ -5,6 +5,9 @@ Kurssimateriaali jakautuu 13 osaan. Jokaista osaa varten on samanniminen kansio,
 
 ## Kurssin Osat
 * Osa 0: Web-sovellusten toiminnan perusteet
+  * 0.4
+  * 0.5
+  * 0.6
 * Osa 1: Reactin perusteet
 * Osa 2: Palvelimen kanssa tapahtuva kommunikointi
 * Osa 3: Palvelimen ohjelmointi NodeJS Express-kirjastolla
