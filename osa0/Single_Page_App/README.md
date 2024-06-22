@@ -23,27 +23,28 @@ sequenceDiagram
     server-->>browser: HTTP 200 OK<br/>the JavaScript file
     deactivate server
 
-    Note left of browser: The browser executes the JavaScript code, that makes<br/>GET request to the Server for the notes in JSON format 
+    Note left of browser: The JavaScript code sets AJAX onreadystatechange<br/> event and waits for the response from the server  
+    Note left of browser: The JavaScript code makes<br/>GET request to the server for the notes
+    Note left of browser: The JavaScript code sets the event handler in the form<br/>and waits for the Save button to be pressed  
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
     server-->>browser: HTTP 200 OK<br/>[JSON file with all notes inside]
     deactivate server
 
-    Note left of browser: The JavaScript code draws received notes on an HTML page 
-    Note left of browser: The JavaScript code sets the event handler in the form<br/>and waits for the Save button to be pressed 
+    Note left of browser: The event handler of Javascript code is triggered,the received<br/> notes are inserted into the local array and rendered on the HTML page 
     Note right of client: The client fills the form<br/>with a new note and clicks the Save button 
     
     client->>browser: Fill Form
     client->>browser: Click Save button
-    Note left of browser: The JavaScript code fetches the new note from the form,<br/>put it into local array, clear the form field
-    Note left of browser: The JavaScript code redraws notes on an HTML page 
+    Note left of browser: The JavaScript's form event is triggered and the new note is fetched<br/>and added into local array, then the form field is cleared
+    Note left of browser: The JavaScript code re-renders the notes using local array<br/>and delete the first note ul-element from HTML-code  
     Note left of browser: The JavaScript code sends the new note in JSON format
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
     activate server
     Note right of browser: Send the new note attached as JSON file.
     Note right of server: Put the new note into array
     server-->>browser: HTTP 201 Created<br/>{"message":"note created"}
-    Note left of browser:  The Javascript code's callback function<br/>is triggered and responded text is printed in the console
+    Note left of browser:  The Javascript code's callback function is triggered<br/>and responded text is printed in the console
     deactivate server    
 
 ```
