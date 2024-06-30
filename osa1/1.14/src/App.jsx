@@ -2,8 +2,8 @@ import { useState } from "react";
 import Button from "./components/Button";
 import Display from "./components/Display";
 
-//create array of anecdote votes
-const votes = new Array(8).fill(0);
+//create arrays of 8 anecdotes votes
+const points = new Array(8).fill(0);
 
 const App = () => {
   const anecdotes = [
@@ -18,7 +18,8 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
-  const [vote, setVote] = useState(votes);
+  //state of the most popular anecdote
+  const [pop, setPop] = useState(0);
 
   //generate integer number
   const getRandomInt = (max) => {
@@ -26,35 +27,32 @@ const App = () => {
   };
 
   const handleSelector = () => {
-    //get generated number between 0-7
+    //get generated number for array index 0->7
     let next = getRandomInt(7);
-    //be sure the next anecdote is different
+    //be sure the next anecdote is different then presented
     while (next === selected) {
       next = getRandomInt(7);
     }
     setSelected(next);
   };
 
-  const handleVote = (selected) => {
-    const handle = () => {
-      let temp = {
-        ...vote,
-        [selected]: (vote[selected] += 1),
-      };
-
-      console.log(selected, " votes: ", vote[selected]);
-      setVote(temp);
-      console.log("state vote: ", vote);
-    };
-
-    return handle;
+  const handleVote = (selected) => () => {
+    points[selected] += 1;
+    //find the most votes
+    const most = Math.max(...points);
+    //find index of the most votes
+    const index = points.indexOf(most);
+    setPop(index);
   };
 
   return (
     <>
+      <h2>Anecdote of the day</h2>
       <Display anecdote={anecdotes[selected]} />
       <Button handleClick={handleVote(selected)} name={"Vote"} />
       <Button handleClick={handleSelector} name={"Next andecdote"} />
+      <h2>Anecdote with the most notes</h2>
+      <Display anecdote={anecdotes[pop]} />
     </>
   );
 };
