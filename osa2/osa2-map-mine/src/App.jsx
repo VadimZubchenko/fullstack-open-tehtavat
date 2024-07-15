@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Note from "./components/Note";
+import axios from "axios";
 
-function App({ notes }) {
-  const [note, setNote] = useState(notes);
-  const [newNote, setNewNote] = useState("a new note...");
+function App() {
+  const [notes, setNotes] = useState([]);
+  const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState();
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/notes").then((response) => {
+      setNotes(response.data);
+    });
+  }, []);
 
   const addNote = (event) => {
     event.preventDefault();
@@ -13,7 +20,7 @@ function App({ notes }) {
       important: Math.random() > 0.5,
       id: notes.length + 1,
     };
-    setNote(notes.concat(noteObject));
+    setNotes(notes.concat(noteObject));
     setNewNote("");
   };
   //target corresponds to the controlled input field
@@ -35,8 +42,7 @@ function App({ notes }) {
           <Note key={note.id} note={note} />
         ))}
       </ul>
-      {/*'value' makes the input field being controled  
-        onChange is called whenever something happens in the input component. */}
+
       <form onSubmit={addNote}>
         <input type="text" value={newNote} onChange={handleNoteChange} />
         <button type="submit">save</button>
