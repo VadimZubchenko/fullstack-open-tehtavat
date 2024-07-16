@@ -1,9 +1,16 @@
 import Display from "./Display";
 
-const Person = ({ filteredPersons }) => {
-  return filteredPersons.map((person) => (
-    <Display key={person.name} name={person.name} number={person.number} />
-  ));
+const Person = ({ filteredPersons, delPerson }) => {
+  return filteredPersons.map((person) => {
+    return (
+      <Display
+        key={person.id}
+        name={person.name}
+        number={person.number}
+        delPerson={() => delPerson(person)}
+      />
+    );
+  });
 };
 
 export default Person;

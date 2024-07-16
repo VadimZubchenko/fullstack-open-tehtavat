@@ -3,7 +3,7 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Person from "./components/Persons";
 import { useEffect } from "react";
-import axios from "axios";
+import backend from "./service/backend";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,33 +11,57 @@ const App = () => {
   const [newPhone, setNewPhone] = useState("");
   const [newFilter, setFilter] = useState("");
 
-  //get data from db.json using json-server
+  //GET data from db.json using json-server
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then((response) => setPersons(response.data));
+    backend.getAll().then((persons) => setPersons(persons));
   }, []);
-  console.log("persons: ", persons.length);
 
-  // is triggered when button is clicked
+  //POST new person
   const addNewPerson = (event) => {
     event.preventDefault();
 
     //normalize the name to string to lower case without spaces
     const normalizedNewName = newName.replace(/\s/g, "").toLowerCase();
 
-    //find the same name in array
+    //to find the same name in array
     const dublicate = (person) =>
       person.name.replace(/\s/g, "").toLowerCase() === normalizedNewName;
 
     //method 'some' returns true when the dublicate is found
     const isDuplicate = persons.some(dublicate);
 
+    const newObject = {
+      name: newName,
+      number: newPhone,
+    };
+    let res = false;
     isDuplicate
-      ? alert(`${newName} is already added to the phonebook`)
-      : setPersons(persons.concat({ name: newName, number: newPhone }));
+      ? (res = window.confirm(
+          `${newName} is already added to the phonebook, replace the old number with a new one?`
+        ))
+      : backend.create(newObject).then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson)); //render new note to screen
+        });
 
-    //clear input field
+    // UPDATE tel. number
+    if (res) {
+      // find updatable person
+      const updatedPerson = persons.find(dublicate);
+      //create object with updated tel. number
+      const updObject = {
+        ...updatedPerson,
+        number: newPhone,
+      };
+
+      backend.update(updObject.id, updObject).then((returnedPerson) => {
+        //render list of updated persons to screen
+        setPersons(
+          persons.map((person) =>
+            person.id !== returnedPerson.id ? person : returnedPerson
+          )
+        );
+      });
+    }
     setNewName("");
     setNewPhone("");
   };
@@ -53,10 +77,19 @@ const App = () => {
   const handleFilter = (event) => {
     setFilter(event.target.value);
   };
-  //limit the list of names by letter
+  //limit the list of names by letters
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(newFilter.toLowerCase())
   );
+
+  const delPerson = (person) => {
+    const result = window.confirm(`Remove ${person.name} ?`);
+    if (result) {
+      backend.remove(person.id).then((deletedPerson) => {
+        setPersons(persons.filter((p) => p.id !== deletedPerson.id));
+      });
+    }
+  };
 
   return (
     <div>
@@ -71,7 +104,7 @@ const App = () => {
         handleChangePhone={handleChangePhone}
       />
       <h2>Numbers</h2>
-      <Person filteredPersons={filteredPersons} />
+      <Person filteredPersons={filteredPersons} delPerson={delPerson} />
     </div>
   );
 };

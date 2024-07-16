@@ -1,6 +1,7 @@
-const Display = ({ name, number }) => (
+const Display = ({ name, number, delPerson }) => (
   <p>
     {name} {number}
+    <button onClick={delPerson}>delete</button>
   </p>
 );
 

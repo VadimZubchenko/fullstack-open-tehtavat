@@ -8,12 +8,52 @@
     {
       "id": "2",
       "content": "Browser can execute only JavaScript",
-      "important": false
+      "important": true
     },
     {
       "id": "3",
       "content": "GET and POST are the most important methods of HTTP protocol",
       "important": true
+    },
+    {
+      "id": "4",
+      "content": "This is a New note",
+      "important": false
+    },
+    {
+      "id": "5",
+      "content": "The New Note",
+      "important": true
+    },
+    {
+      "id": "fc05",
+      "content": "The Second Note",
+      "important": true
+    },
+    {
+      "id": "308c",
+      "content": "The Third Note",
+      "important": false
+    },
+    {
+      "id": "e21b",
+      "content": "The Fourth Note added",
+      "important": true
+    },
+    {
+      "id": "9205",
+      "content": "service's been created",
+      "important": true
+    },
+    {
+      "id": "4bc3",
+      "content": "The new Note after ",
+      "important": false
+    },
+    {
+      "id": "15b7",
+      "content": "Test Note created",
+      "important": false
     }
   ]
 }
