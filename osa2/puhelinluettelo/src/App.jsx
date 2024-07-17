@@ -11,80 +11,75 @@ const App = () => {
   const [newPhone, setNewPhone] = useState("");
   const [newFilter, setFilter] = useState("");
 
-  //GET data from db.json using json-server
+  // GET data from db.json using json-server
   useEffect(() => {
     backend.getAll().then((persons) => setPersons(persons));
   }, []);
 
-  //POST new person
+  // Handle form submission for adding a new person
   const addNewPerson = (event) => {
     event.preventDefault();
 
-    //normalize the name to string to lower case without spaces
+    // Transform input name to string of lower case without spaces
     const normalizedNewName = newName.replace(/\s/g, "").toLowerCase();
 
-    //to find the same name in array
+    // the same name in array
     const dublicate = (person) =>
       person.name.replace(/\s/g, "").toLowerCase() === normalizedNewName;
 
-    //method 'some' returns true when the dublicate is found
+    // If the dublicate is found, it returns true
     const isDuplicate = persons.some(dublicate);
 
-    const newObject = {
-      name: newName,
-      number: newPhone,
-    };
-    let res = false;
-    isDuplicate
-      ? (res = window.confirm(
-          `${newName} is already added to the phonebook, replace the old number with a new one?`
-        ))
-      : backend.create(newObject).then((returnedPerson) => {
-          setPersons(persons.concat(returnedPerson)); //render new note to screen
-        });
+    // Check is there the same name in db
+    if (isDuplicate) {
+      const confirmUpdate = window.confirm(
+        `${newName} is already added to the phonebook, replace the old number with a new one?`
+      );
+      // Replace the tel. number with new one
+      if (confirmUpdate) {
+        // Find updatable person
+        const personToUpdate = persons.find(dublicate);
 
-    // UPDATE tel. number
-    if (res) {
-      // find updatable person
-      const updatedPerson = persons.find(dublicate);
-      //create object with updated tel. number
-      const updObject = {
-        ...updatedPerson,
-        number: newPhone,
-      };
+        // Create object with updated tel. number
+        const updatedPerson = { ...personToUpdate, number: newPhone };
 
-      backend.update(updObject.id, updObject).then((returnedPerson) => {
-        //render list of updated persons to screen
-        setPersons(
-          persons.map((person) =>
-            person.id !== returnedPerson.id ? person : returnedPerson
-          )
-        );
+        backend
+          .update(updatedPerson.id, updatedPerson)
+          .then((returnedPerson) => {
+            // Render list of updated persons to screen
+            setPersons(
+              persons.map((person) =>
+                person.id !== returnedPerson.id ? person : returnedPerson
+              )
+            );
+          });
+      }
+    } else {
+      // Create new person object
+      const newPerson = { name: newName, number: newPhone };
+
+      backend.create(newPerson).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson)); //render new note to screen
       });
     }
+
     setNewName("");
     setNewPhone("");
   };
 
-  // is triggered when any changes occur in the name input field
-  const handleChangeName = (event) => {
-    setNewName(event.target.value);
-  };
-  // is triggered when any changes occur in the phone input field
-  const handleChangePhone = (event) => {
-    setNewPhone(event.target.value);
-  };
-  const handleFilter = (event) => {
-    setFilter(event.target.value);
-  };
-  //limit the list of names by letters
+  // Handle changes in input fields
+  const handleChangeName = (event) => setNewName(event.target.value);
+  const handleChangePhone = (event) => setNewPhone(event.target.value);
+  const handleFilter = (event) => setFilter(event.target.value);
+
+  // Filter the list of persons based on the search input
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(newFilter.toLowerCase())
   );
 
-  const delPerson = (person) => {
-    const result = window.confirm(`Remove ${person.name} ?`);
-    if (result) {
+  // Handle removing a person
+  const remove = (person) => {
+    if (window.confirm(`Remove ${person.name}?`)) {
       backend.remove(person.id).then((deletedPerson) => {
         setPersons(persons.filter((p) => p.id !== deletedPerson.id));
       });
@@ -104,7 +99,7 @@ const App = () => {
         handleChangePhone={handleChangePhone}
       />
       <h2>Numbers</h2>
-      <Person filteredPersons={filteredPersons} delPerson={delPerson} />
+      <Person filteredPersons={filteredPersons} remove={remove} />
     </div>
   );
 };
