@@ -42,7 +42,7 @@ const App = () => {
         // Find updatable person
         const personToUpdate = persons.find(dublicate);
 
-        // Create object with updated tel. number
+        // Create object with updated tel.
         const updatedPerson = { ...personToUpdate, number: newPhone };
 
         backend
@@ -54,6 +54,10 @@ const App = () => {
                 person.id !== returnedPerson.id ? person : returnedPerson
               )
             );
+            setErrorMsg(`${returnedPerson.name}'s number has been updated.`);
+            setTimeout(() => {
+              setErrorMsg(null);
+            }, 3000);
           });
       }
     } else {
@@ -62,10 +66,10 @@ const App = () => {
 
       backend.create(newPerson).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson)); //render new note to screen
-        setErrorMsg(`${returnedPerson.name} has been added succesfully.`);
+        setErrorMsg(`${returnedPerson.name} has been added.`);
         setTimeout(() => {
           setErrorMsg(null);
-        }, 5000);
+        }, 3000);
       });
     }
 
@@ -88,14 +92,18 @@ const App = () => {
     if (window.confirm(`Remove ${person.name}?`)) {
       backend.remove(person.id).then((deletedPerson) => {
         setPersons(persons.filter((p) => p.id !== deletedPerson.id));
+        setErrorMsg(`${deletedPerson.name} has been removed`);
+        setTimeout(() => {
+          setErrorMsg(null);
+        }, 3000);
       });
     }
   };
 
   return (
     <div>
-      <Notification message={errorMsg} />
       <h2>Phonebook</h2>
+      <Notification message={errorMsg} />
       <Filter newFilter={newFilter} handleFilter={handleFilter} />
       <h3>Add a new</h3>
       <PersonForm
