@@ -4,12 +4,14 @@ import PersonForm from "./components/PersonForm";
 import Person from "./components/Persons";
 import { useEffect } from "react";
 import backend from "./service/backend";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [newFilter, setFilter] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
 
   // GET data from db.json using json-server
   useEffect(() => {
@@ -60,6 +62,10 @@ const App = () => {
 
       backend.create(newPerson).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson)); //render new note to screen
+        setErrorMsg(`${returnedPerson.name} has been added succesfully.`);
+        setTimeout(() => {
+          setErrorMsg(null);
+        }, 5000);
       });
     }
 
@@ -88,6 +94,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={errorMsg} />
       <h2>Phonebook</h2>
       <Filter newFilter={newFilter} handleFilter={handleFilter} />
       <h3>Add a new</h3>
