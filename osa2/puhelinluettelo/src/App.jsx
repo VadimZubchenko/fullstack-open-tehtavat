@@ -11,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [newFilter, setFilter] = useState("");
+  const [successMsg, setSuccessMsg] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
   // GET data from db.json using json-server
@@ -54,10 +55,20 @@ const App = () => {
                 person.id !== returnedPerson.id ? person : returnedPerson
               )
             );
-            setErrorMsg(`${returnedPerson.name}'s number has been updated.`);
+            setSuccessMsg(`${returnedPerson.name}'s number has been updated.`);
+            setTimeout(() => {
+              setSuccessMsg(null);
+            }, 3000);
+          })
+          .catch(() => {
+            setErrorMsg(
+              `Infrormation of ${updatedPerson.name} has already been removed.`
+            );
             setTimeout(() => {
               setErrorMsg(null);
             }, 3000);
+            // Reload list of persons
+            setPersons(persons.filter((p) => p.id !== updatedPerson.id));
           });
       }
     } else {
@@ -66,9 +77,9 @@ const App = () => {
 
       backend.create(newPerson).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson)); //render new note to screen
-        setErrorMsg(`${returnedPerson.name} has been added.`);
+        setSuccessMsg(`${returnedPerson.name} has been added.`);
         setTimeout(() => {
-          setErrorMsg(null);
+          setSuccessMsg(null);
         }, 3000);
       });
     }
@@ -90,20 +101,32 @@ const App = () => {
   // Handle removing a person
   const remove = (person) => {
     if (window.confirm(`Remove ${person.name}?`)) {
-      backend.remove(person.id).then((deletedPerson) => {
-        setPersons(persons.filter((p) => p.id !== deletedPerson.id));
-        setErrorMsg(`${deletedPerson.name} has been removed`);
-        setTimeout(() => {
-          setErrorMsg(null);
-        }, 3000);
-      });
+      backend
+        .remove(person.id)
+        .then((deletedPerson) => {
+          setPersons(persons.filter((p) => p.id !== deletedPerson.id));
+          setSuccessMsg(`${deletedPerson.name} has been removed`);
+          setTimeout(() => {
+            setSuccessMsg(null);
+          }, 3000);
+        })
+        .catch(() => {
+          setErrorMsg(
+            `Infrormation of ${person.name} has already been removed.`
+          );
+          setTimeout(() => {
+            setErrorMsg(null);
+          }, 3000);
+          // Reload list of persons
+          setPersons(persons.filter((p) => p.id !== updatedPerson.id));
+        });
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMsg} />
+      <Notification success={successMsg} error={errorMsg} />
       <Filter newFilter={newFilter} handleFilter={handleFilter} />
       <h3>Add a new</h3>
       <PersonForm
