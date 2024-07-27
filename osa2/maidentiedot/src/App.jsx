@@ -1,54 +1,66 @@
 import { useState } from "react";
-import axios from "axios";
 import { useEffect } from "react";
-import Filter from "../components/Filter";
-import Display from "../components/Display";
-import Notification from "../components/Notification";
+import Filter from "./components/Filter";
+import Display from "./components/Display";
+import Notification from "./components/Notification";
+import backend from "./service/backend";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [newFilter, setFilter] = useState("");
   const [filteredCountries, setFilteredCountries] = useState([]);
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState(null);
+  const [weather, setWeather] = useState(null);
 
-  // Fetch countries data just once when it first runs
+  // Fetch countries data just once, when it first runs
   useEffect(() => {
-    axios
-      .get(`https://studies.cs.helsinki.fi/restcountries/api/all`)
-      .then((response) => setCountries(response.data))
+    backend
+      .getAll()
+      .then((countries) => setCountries(countries))
       .catch((error) => console.error(error));
   }, []);
 
   // Filter the list of countries based on the search input
   useEffect(() => {
-    if (newFilter !== "") {
-      // set state of filtered country is async. so use variable for checking array length later.
+    if (newFilter.trim() !== "") {
       const filtered = countries.filter((country) =>
-        country.name.common.toLowerCase().includes(newFilter.toLowerCase())
+        country.name.common
+          .replace(/\s/g, "")
+          .toLowerCase()
+          .includes(newFilter.replace(/\s/g, "").toLowerCase())
       );
       setFilteredCountries(filtered);
-
-      // filteredCountries.length is '0', because state value hasn't yet been changed till next render
-      // in other words, it's empty, although is used setFilterCountries(filtered) above.
+      setMessage(null);
       if (filtered.length > 10) {
         setMessage("Too many matches, specify another filter");
         setFilteredCountries([]);
-      } else {
-        setMessage(null);
+      } else if (filtered.length === 1) {
+        const capital = filtered[0].capital[0]; //
+        backend
+          .getOneWeather(capital)
+          .then((weather) => setWeather(weather.list[0])) // Set the first weather record
+          .catch((error) => console.error(error));
       }
     } else {
-      setFilteredCountries([]);
       setMessage(null);
+      setWeather(null);
     }
   }, [newFilter]);
 
   // Handle changes in input fields
   const handleFilter = (event) => setFilter(event.target.value);
 
+  // change filter with name of selected country to show it data
+  const handleShow = (country) => setFilter(country);
+
   return (
     <div>
       <Filter newFilter={newFilter} handleFilter={handleFilter} />
-      <Display filteredCountries={filteredCountries} />
+      <Display
+        filteredCountries={filteredCountries}
+        handleShow={handleShow}
+        weather={weather}
+      />
       <Notification message={message} />
     </div>
   );

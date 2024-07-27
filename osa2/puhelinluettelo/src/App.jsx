@@ -118,7 +118,7 @@ const App = () => {
             setErrorMsg(null);
           }, 3000);
           // Reload list of persons
-          setPersons(persons.filter((p) => p.id !== updatedPerson.id));
+          setPersons(persons.filter((p) => p.id !== person.id));
         });
     }
   };

@@ -1,7 +1,6 @@
 const Display = ({ name, number, remove }) => (
   <p>
-    {name} {number}
-    <button onClick={remove}>delete</button>
+    {name} {number} <button onClick={remove}>delete</button>
   </p>
 );
 
