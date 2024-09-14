@@ -119,7 +119,7 @@ app.post("/api/notes", (req, resp) => {
 // middleware is exectuted after all end-ponts if no route handles the HTTP request.
 app.use(unknownEndpoint);
 
-const hostname = "localhost";
+const hostname = "0.0.0.0";
 const port = process.env.port || 3001;
 
 app.listen(port, hostname, () => {

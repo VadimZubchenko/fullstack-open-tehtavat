@@ -2,7 +2,7 @@
 FROM node:14
 
 # 2. Set the working directory inside the container
-WORKDIR /
+WORKDIR /osa3/server
 
 # 3. Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3001
 
 # 7. Command to start the application
-CMD ["npm", "run start"]
+CMD ["npm", "start"]
