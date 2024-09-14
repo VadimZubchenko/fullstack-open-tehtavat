@@ -2,7 +2,7 @@
 FROM node:14
 
 # 2. Set the working directory inside the container
-WORKDIR /osa3/server
+WORKDIR /server
 
 # 3. Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
