@@ -5,6 +5,9 @@
 const express = require("express");
 const app = express();
 
+const cors = require("cors");
+app.use(cors());
+
 let notes = [
   {
     id: "1",
@@ -113,6 +116,9 @@ app.post("/api/notes", (req, resp) => {
 // middleware is exectuted after all end-ponts if no route handles the HTTP request.
 app.use(unknownEndpoint);
 
-const PORT = 3001;
-app.listen(PORT);
-console.log(`Server running on port: ${PORT}`);
+const hostname = "0.0.0.0";
+const port = process.env.port || 3000;
+
+app.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
