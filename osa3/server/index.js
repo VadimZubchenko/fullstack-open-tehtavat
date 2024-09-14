@@ -47,6 +47,9 @@ app.use(requestLogger);
 // ennen kuin routen käsittelijää kutsutaan.
 app.use(express.json());
 
+// middleware for serve static files, where is index.html
+app.use(express.static("../dist"));
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
@@ -116,8 +119,8 @@ app.post("/api/notes", (req, resp) => {
 // middleware is exectuted after all end-ponts if no route handles the HTTP request.
 app.use(unknownEndpoint);
 
-const hostname = "0.0.0.0";
-const port = process.env.port || 3000;
+const hostname = "localhost";
+const port = process.env.port || 3001;
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
