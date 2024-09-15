@@ -5,8 +5,9 @@
 const express = require("express");
 const app = express();
 
-const cors = require("cors");
-app.use(cors());
+// Don't need 'cors ' in the version with static build in ./dist
+/* const cors = require("cors");
+app.use(cors()); */
 
 let notes = [
   {
