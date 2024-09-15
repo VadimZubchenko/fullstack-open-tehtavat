@@ -33,17 +33,17 @@
     {
       "id": "308c",
       "content": "The Third Note",
-      "important": true
+      "important": false
     },
     {
       "id": "e21b",
       "content": "The Fourth Note added",
-      "important": true
+      "important": false
     },
     {
       "id": "9205",
       "content": "service's been created",
-      "important": true
+      "important": false
     },
     {
       "id": "4bc3",
@@ -53,6 +53,11 @@
     {
       "id": "15b7",
       "content": "Test Note created",
+      "important": true
+    },
+    {
+      "id": "c571",
+      "content": "This is my Won!",
       "important": true
     }
   ]

@@ -5,10 +5,6 @@
 const express = require("express");
 const app = express();
 
-// Don't need 'cors ' in the version with static build in ./dist
-/* const cors = require("cors");
-app.use(cors()); */
-
 let notes = [
   {
     id: "1",
@@ -32,6 +28,9 @@ let notes = [
   },
 ];
 
+// middleware for serve static files, where is index.html
+app.use(express.static("../dist"));
+
 // middleware, joka tulostaa konsoliin palvelimelle tulevien pyyntöjen perustietoja.
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
@@ -41,15 +40,17 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
-// initiate middleware requestLogger
-app.use(requestLogger);
 // load json-parser using built-in middleware function in Express
 // se muuttaa JSON-muotoisen datan JavaScript-olioksi
 // ennen kuin routen käsittelijää kutsutaan.
 app.use(express.json());
 
-// middleware for serve static files, where is index.html
-app.use(express.static("../dist"));
+// initiate middleware requestLogger
+app.use(requestLogger);
+
+// Don't need 'cors ' in the version with static build in ./dist because front and back use the same origin
+/* const cors = require("cors");
+app.use(cors()); */
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
