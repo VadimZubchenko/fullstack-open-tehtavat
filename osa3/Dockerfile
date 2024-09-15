@@ -1,20 +1,23 @@
-# 1. Use an official Node.js runtime as a base image
-FROM node:14
+# Use Node.js image
+FROM node:18
 
-# 2. Set the working directory inside the container
-WORKDIR /server
+# Set the working directory
+WORKDIR /app
 
-# 3. Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy the server code and dependencies
+COPY server/package*.json ./server/
 
-# 4. Install the project dependencies
-RUN npm install
+# Navigate to the 'server' directory and install the server dependencies
+RUN cd server && npm install
 
-# 5. Copy the rest of the application code to the container
-COPY . .
+# Copy the rest of the server code
+COPY server/ ./server/
 
-# 6. Expose the port your app runs on
-EXPOSE 3001
+# Copy the built frontend
+COPY dist/ ./dist
 
-# 7. Command to start the application
-CMD ["npm", "start"]
+# Set the working directory for the server
+WORKDIR /app/server
+
+# Command to start the server
+CMD ["node", "index.js"]
