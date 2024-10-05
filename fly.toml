@@ -7,7 +7,7 @@ app = 'fullstack-open-tehtavat'
 primary_region = 'arn'
 
 [http_service]
-  internal_port = 3001
+  internal_port = env.PORT
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
