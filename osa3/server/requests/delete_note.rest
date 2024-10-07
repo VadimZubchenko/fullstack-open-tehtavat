@@ -1,1 +1,2 @@
-DELETE https://fullstack-open-tehtavat.onrender.com/api/notes/2
+DELETE  http://localhost:3001/api/notes/67016dad53a0897a52
+
