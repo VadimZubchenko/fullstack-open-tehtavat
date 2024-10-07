@@ -105,10 +105,12 @@ const App = () => {
         .remove(person.id)
         .then((deletedPerson) => {
           setPersons(persons.filter((p) => p.id !== deletedPerson.id));
-          setSuccessMsg(`${deletedPerson.name} has been removed`);
+          setSuccessMsg(`${person.name} has been removed`);
           setTimeout(() => {
             setSuccessMsg(null);
           }, 3000);
+          // Reload list of persons
+          setPersons(persons.filter((p) => p.id !== person.id));
         })
         .catch(() => {
           setErrorMsg(
@@ -117,8 +119,6 @@ const App = () => {
           setTimeout(() => {
             setErrorMsg(null);
           }, 3000);
-          // Reload list of persons
-          setPersons(persons.filter((p) => p.id !== person.id));
         });
     }
   };
