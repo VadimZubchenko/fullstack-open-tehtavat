@@ -22,7 +22,6 @@ const requestLogger = (request, response, next) => {
 
 // Don't need 'cors ' in the version with static build in ./dist because front and back use the same origin
 const cors = require("cors");
-
 app.use(cors());
 
 // load json-parser using built-in middleware function in Express
@@ -31,7 +30,6 @@ app.use(cors());
 app.use(express.json());
 
 // initiate middleware requestLogger
-//!!! must set after json-parser
 app.use(requestLogger);
 
 const unknownEndpoint = (request, response) => {
@@ -48,10 +46,16 @@ app.get("/api/notes", (request, response) => {
 });
 
 // GET requested note
-app.get("/api/notes/:id", (request, response) => {
-  Note.findById(request.params.id).then((note) => {
-    response.json(note);
-  });
+app.get("/api/notes/:id", (request, response, next) => {
+  Note.findById(request.params.id)
+    .then((note) => {
+      if (note) {
+        response.json(note);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => next(error));
 });
 
 // DELETE requested note
@@ -90,6 +94,21 @@ app.post("/api/notes", (req, resp) => {
   note.save().then((savedNote) => {
     resp.json(savedNote);
   });
+});
+
+app.put("/api/notes/:id", (request, response, next) => {
+  const body = request.body;
+
+  const note = {
+    content: body.content,
+    important: body.important,
+  };
+
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then((updatedNote) => {
+      response.json(updatedNote);
+    })
+    .catch((error) => next(error));
 });
 
 // middleware is exectuted after all end-ponts if no route handles the HTTP request.
