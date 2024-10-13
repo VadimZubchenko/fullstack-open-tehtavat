@@ -20,6 +20,16 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
 // Don't need 'cors ' in the version with static build in ./dist because front and back use the same origin
 const cors = require("cors");
 app.use(cors());
@@ -58,15 +68,6 @@ app.get("/api/notes/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-// DELETE requested note
-app.delete("/api/notes/:id", (request, response, next) => {
-  Note.findByIdAndDelete(request.params.id)
-    .then((result) => {
-      response.status(204).end();
-    })
-    .catch((error) => next(error));
-});
-
 const generateID = () => {
   // find max id number in notes
   // !!! Taulukko voidaan muuttaa yksittäisiksi luvuiksi käyttäen taulukon spread-syntaksia, eli kolmea pistettä ...taulukko.
@@ -96,6 +97,15 @@ app.post("/api/notes", (req, resp) => {
   });
 });
 
+// DELETE requested note
+app.delete("/api/notes/:id", (request, response, next) => {
+  Note.findByIdAndDelete(request.params.id)
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
+});
+
 app.put("/api/notes/:id", (request, response, next) => {
   const body = request.body;
 
@@ -111,8 +121,9 @@ app.put("/api/notes/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-// middleware is exectuted after all end-ponts if no route handles the HTTP request.
+// middlewares are exectuted after all end-ponts if no route handles the HTTP request.
 app.use(unknownEndpoint);
+app.use(errorHandler);
 
 const hostname = "0.0.0.0";
 const PORT = process.env.PORT;
