@@ -75,13 +75,27 @@ const App = () => {
       // Create new person object
       const newPerson = { name: newName, number: newPhone };
 
-      backend.create(newPerson).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson)); //render new note to screen
-        setSuccessMsg(`${returnedPerson.name} has been added.`);
-        setTimeout(() => {
-          setSuccessMsg(null);
-        }, 3000);
-      });
+      backend
+        .create(newPerson)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson)); //render new note to screen
+          setSuccessMsg(`${returnedPerson.name} has been added.`);
+          setTimeout(() => {
+            setSuccessMsg(null);
+          }, 3000);
+        })
+        .catch(() => {
+          setErrorMsg(
+            `Person validation failed: Path ${`name`} (${
+              newPerson.name
+            }) is shorter than the minimum allowed length (3).`
+          );
+          setTimeout(() => {
+            setErrorMsg(null);
+          }, 3000);
+          // Reload list of persons
+          setPersons(persons.filter((p) => p.id !== updatedPerson.id));
+        });
     }
 
     setNewName("");
