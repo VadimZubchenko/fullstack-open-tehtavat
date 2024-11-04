@@ -14,26 +14,22 @@ mongoose.connect(url);
 
 // Define schema with parametries with type of data
 const noteSchema = new mongoose.Schema({
-  content: {
-    type: String,
-    minlength: 5,
-    required: true,
-  },
+  content: String,
   important: Boolean,
 });
 
 // Create a model of schema
 const Note = mongoose.model("Note", noteSchema);
 
-// const note = new Note({
-//   content: 'Final note for Test',
-//   important: true,
-// })
+/* const note = new Note({
+  content: "Final note for Test",
+  important: true,
+}); */
 
-// note.save().then(result => {
-//   console.log('note saved!')
-//   mongoose.connection.close()
-// })
+/* note.save().then(result => {
+  console.log('note saved!')
+  mongoose.connection.close()
+}) */
 
 Note.find({ important: true }).then((result) => {
   result.forEach((note) => {

@@ -21,7 +21,7 @@ const requestLogger = (request, response, next) => {
 };
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
+  console.error("Error: ", error.message);
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
@@ -70,22 +70,10 @@ app.get("/api/notes/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-const generateID = () => {
-  // find max id number in notes
-  // !!! Taulukko voidaan muuttaa yksittäisiksi luvuiksi käyttäen taulukon spread-syntaksia, eli kolmea pistettä ...taulukko.
-  const maxId =
-    notes.length > 0 ? Math.max(...notes.map((n) => Number(n.id))) : 0;
-  return String(maxId + 1);
-};
-
 // POST new note
 app.post("/api/notes", (req, resp, next) => {
   const body = req.body;
-
-  // check if body include content
-  if (body.content === undefined) {
-    return resp.status(400).json({ error: "content missing" });
-  }
+  console.log("Content received:", body.content);
 
   // create note based on req body data
   const note = new Note({
@@ -114,10 +102,10 @@ app.delete("/api/notes/:id", (request, response, next) => {
 app.put("/api/notes/:id", (request, response, next) => {
   const { content, important } = request.body;
 
-  const note = {
+  /* const note = {
     content: body.content,
     important: body.important,
-  };
+  }; */
 
   Note.findByIdAndUpdate(
     request.params.id,
