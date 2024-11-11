@@ -89,7 +89,7 @@ const App = () => {
           setErrorMsg(error.response.data.error.message);
           setTimeout(() => {
             setErrorMsg(null);
-          }, 10000);
+          }, 3000);
           // Reload list of persons
           setPersons(persons.filter((p) => p.id !== updatedPerson.id));
         });
