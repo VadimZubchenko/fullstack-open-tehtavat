@@ -84,15 +84,12 @@ const App = () => {
             setSuccessMsg(null);
           }, 3000);
         })
-        .catch(() => {
-          setErrorMsg(
-            `Person validation failed: Path ${`name`} (${
-              newPerson.name
-            }) is shorter than the minimum allowed length (3).`
-          );
+        .catch((error) => {
+          // The path is taken from json via log
+          setErrorMsg(error.response.data.error.message);
           setTimeout(() => {
             setErrorMsg(null);
-          }, 3000);
+          }, 10000);
           // Reload list of persons
           setPersons(persons.filter((p) => p.id !== updatedPerson.id));
         });
