@@ -29,7 +29,7 @@
     "@flydotio/dockerfile": "^0.5.9",
     "@stylistic/eslint-plugin-js": "^2.10.1",
     "eslint": "^9.14.0",
-    "globals": "^15.12.0",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "supertest": "^7.0.0"
   }
 }
