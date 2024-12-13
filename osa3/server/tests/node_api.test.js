@@ -11,16 +11,18 @@ const Note = require('../models/note')
 
 beforeEach(async () => {
   await Note.deleteMany({})
+  console.log('cleared')
 
-  let noteObject = new Note(helper.initialNotes[0])
-  await noteObject.save()
+  await Note.insertMany(helper.initialNotes)
 
-  noteObject = new Note(helper.initialNotes[1])
-  await noteObject.save()
+  console.log('saved')
+
+  console.log('done')
 })
 
 describe('API test', () => {
   test('notes are returned as json', async () => {
+    console.log('entered test')
     await api
       .get('/api/notes')
       .expect(200)
@@ -28,12 +30,14 @@ describe('API test', () => {
   })
 
   test('there are two notes', async () => {
+    console.log('entered test')
     const response = await api.get('/api/notes')
 
     assert.strictEqual(response.body.length, helper.initialNotes.length)
   })
 
   test('the first note is about HTTP methods', async () => {
+    console.log('entered test')
     const response = await api.get('/api/notes')
 
     const contents = response.body.map((e) => e.content)
@@ -41,6 +45,7 @@ describe('API test', () => {
   })
 
   test('a valid note can be added ', async () => {
+    console.log('entered test')
     const newNote = {
       content: 'async/await simplifies making async calls',
       important: true,
@@ -62,6 +67,7 @@ describe('API test', () => {
   })
 
   test('note without content is not added', async () => {
+    console.log('entered test')
     const newNote = {
       important: true,
     }
@@ -74,6 +80,7 @@ describe('API test', () => {
   })
 
   test('a specific note can be viewed', async () => {
+    console.log('entered test')
     const notesAtStart = await helper.notesInDb()
     const noteToView = notesAtStart[0]
 
@@ -86,6 +93,7 @@ describe('API test', () => {
   })
 
   test('a note can be deleted', async () => {
+    console.log('entered test')
     const notesAtStart = await helper.notesInDb()
 
     const noteToDelete = notesAtStart[0]
