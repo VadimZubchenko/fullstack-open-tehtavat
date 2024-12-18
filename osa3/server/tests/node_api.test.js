@@ -9,6 +9,7 @@ const api = supertest(app)
 const helper = require('./test_helper')
 const Note = require('../models/note')
 
+//!!! The beforeEach function clears the database with await Note.deleteMany({}) before every test. This removes all existing notes, including any notes added in previous test cases.
 beforeEach(async () => {
   await Note.deleteMany({})
   console.log('cleared')
