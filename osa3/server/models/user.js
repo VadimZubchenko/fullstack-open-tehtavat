@@ -4,12 +4,12 @@ const userSchema = mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true, // username oltava yksikäsitteinen
+    unique: true, // username must be unique
   },
   name: String,
   passwordHash: String,
   // ref to many notes, so [..] is used
-  note: [
+  notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'note',

@@ -2,5 +2,5 @@ PUT http://localhost:3001/api/notes/6706431c812d914d1e60529e
 Content-Type: application/json
 
 {
-"content": "CSS is important tool in web layout. ", "important": true
+"userId": "67631ca041b54bbddaa8f973"
 }
