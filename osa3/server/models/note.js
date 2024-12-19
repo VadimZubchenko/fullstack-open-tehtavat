@@ -9,7 +9,7 @@ const noteSchema = new mongoose.Schema({
   important: Boolean,
   // ref to just one user, so [..] don't used
   user: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
 })
