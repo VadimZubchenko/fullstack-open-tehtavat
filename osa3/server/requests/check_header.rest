@@ -1,0 +1,4 @@
+POST http://localhost:3001/check-header 
+Content-Type: text/plain
+
+Hello from Postman!
