@@ -1,12 +1,16 @@
-# fly.toml app configuration file generated for note-app-7933 on 2024-10-07T15:10:46+03:00
+# fly.toml app configuration file generated for server-cold-sunset-4198 on 2025-06-03T21:53:49+03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'note-app-7933'
+app = 'server-cold-sunset-4198'
 primary_region = 'arn'
 
 [build]
+  dockerfile = 'Dockerfile'
+
+[env]
+  PORT = '3001'
 
 [http_service]
   internal_port = 3001

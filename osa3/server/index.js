@@ -9,7 +9,7 @@ require('dotenv').config()
 const Note = require('./models/note')
 
 // middleware for serve static files, where is index.html
-app.use(express.static('../dist'))
+app.use(express.static('dist'))
 
 // middleware, joka tulostaa konsoliin palvelimelle tulevien pyyntöjen perustietoja.
 const requestLogger = (request, response, next) => {
