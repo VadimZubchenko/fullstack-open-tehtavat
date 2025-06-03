@@ -82,6 +82,10 @@ const generateID = () => {
 app.post('/api/notes', (req, resp) => {
   const body = req.body
 
+  // check content-type
+  const contentType = req.get('Content-Type') // or: req.headers['content-type']
+  console.log('Content-Type header:', contentType)
+
   // check if body include content
   if (body.content === undefined) {
     return resp.status(400).json({ error: 'content missing' })
