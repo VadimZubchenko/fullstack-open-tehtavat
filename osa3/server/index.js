@@ -20,9 +20,10 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
-// Don't need 'cors ' in the version with static build in ./dist because front and back use the same origin
-const cors = require('cors')
-app.use(cors())
+// Don't need 'cors ' in the version with static build in ./dist because front uses proxy(vite.confgi.js)
+// and the same origin (localhost:5173)
+/* const cors = require('cors')
+app.use(cors()) */
 
 // load json-parser using built-in middleware function in Express
 // se muuttaa JSON-muotoisen datan JavaScript-olioksi
